@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>上海中考招生信息门户 | 2026</title>
+<style>
+:root {
+  --primary:#1a56db;--primary-light:#e8f0fe;--primary-dark:#1340a0;
+  --success:#059669;--warning:#d97706;--danger:#dc2626;
+  --bg:#f8fafc;--card-bg:#fff;--text:#1e293b;--text-secondary:#64748b;
+  --border:#e2e8f0;--shadow:0 1px 3px rgba(0,0,0,.08);
+  --shadow-lg:0 10px 25px rgba(0,0,0,.08);--radius:12px;--radius-sm:8px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+a{color:var(--primary);text-decoration:none}a:hover{text-decoration:underline}
+
+/* ===== Navigation ===== */
+.nav{background:linear-gradient(135deg,#0f2b6b 0%,#1a56db 100%);color:#fff;padding:0 24px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.nav-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;height:56px;gap:20px;flex-wrap:wrap}
+.nav-logo{font-size:1.2rem;font-weight:700;white-space:nowrap}
+.nav-logo a{color:#fff;text-decoration:none}
+
+/* Main Tab Navigation */
+.main-tabs{display:flex;gap:0;margin-left:auto}
+.main-tab{padding:8px 24px;border:none;background:transparent;color:rgba(255,255,255,.75);cursor:pointer;font-size:.95rem;font-weight:500;border-radius:8px 8px 0 0;transition:all .2s;position:relative}
+.main-tab:hover{color:#fff;background:rgba(255,255,255,.1)}
+.main-tab.active{color:#fff;background:rgba(255,255,255,.18);font-weight:700}
+.main-tab .tab-badge{display:inline-block;font-size:.65rem;padding:1px 6px;border-radius:10px;margin-left:4px;vertical-align:middle}
+.main-tab.active .tab-badge-pt{background:#3b82f6;color:#fff}
+.main-tab.active .tab-badge-zz{background:#10b981;color:#fff}
+
+/* Sub nav links */
+.nav-links{display:flex;gap:2px;overflow-x:auto;flex-wrap:wrap;width:100%;padding-bottom:8px}
+.nav-links a{color:rgba(255,255,255,.85);padding:3px 8px;border-radius:6px;font-size:.75rem;white-space:nowrap;transition:all .2s}
+.nav-links a:hover,.nav-links a.active{background:rgba(255,255,255,.15);color:#fff;text-decoration:none}
+
+.container{max-width:1200px;margin:0 auto;padding:24px 20px}
+.header{text-align:center;padding:20px 0 8px}
+.header h1{font-size:1.8rem;color:var(--primary-dark)}
+.header p{color:var(--text-secondary);margin-top:6px;font-size:.9rem}
+
+.card{background:var(--card-bg);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px;margin-bottom:20px}
+.card h3{font-size:1.1rem;margin-bottom:12px;color:var(--primary-dark);border-bottom:2px solid var(--primary-light);padding-bottom:8px}
+table{width:100%;border-collapse:collapse;font-size:.9rem}
+th{background:var(--primary-light);color:var(--primary-dark);font-weight:600;padding:10px 8px;text-align:center;white-space:nowrap}
+td{padding:7px 8px;text-align:center;border-bottom:1px solid var(--border)}
+tr:hover td{background:#f1f5f9}
+.up{color:var(--danger);font-weight:600}
+.down{color:var(--success);font-weight:600}
+
+.badge{display:inline-block;padding:2px 8px;border-radius:12px;font-size:.72rem;font-weight:600}
+.badge-blue{background:var(--primary-light);color:var(--primary-dark)}
+.badge-green{background:#d1fae5;color:#065f46}
+.badge-yellow{background:#fef3c7;color:#92400e}
+.badge-red{background:#fee2e2;color:#991b1b}
+.badge-gray{background:#f1f5f9;color:#64748b}
+
+.stat-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-bottom:20px}
+.stat-card{background:var(--card-bg);border-radius:var(--radius-sm);box-shadow:var(--shadow);padding:16px;text-align:center}
+.stat-card .label{font-size:.78rem;color:var(--text-secondary)}
+.stat-card .value{font-size:1.5rem;font-weight:700;color:var(--primary-dark);margin-top:4px}
+.stat-card .change{font-size:.78rem;margin-top:2px}
+
+.grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+
+/* ===== Content Tabs ===== */
+.content-tabs{display:none}
+.content-tabs.active{display:block}
+
+/* ===== Quick Query ===== */
+.quick-query{background:linear-gradient(135deg,#1a56db 0%,#3b82f6 100%);border-radius:var(--radius);padding:24px;color:#fff;margin-bottom:20px;text-align:center}
+.quick-query h2{font-size:1.3rem;margin-bottom:8px}
+.quick-query p{opacity:.9;font-size:.9rem;margin-bottom:12px}
+.quick-query input{width:200px;padding:12px 16px;border-radius:8px;border:none;font-size:1.1rem;font-weight:700;text-align:center;outline:none;margin-right:8px}
+.quick-query input:focus{box-shadow:0 0 0 3px rgba(255,255,255,.3)}
+.quick-query button{padding:12px 24px;border-radius:8px;border:none;background:#059669;color:#fff;font-size:1rem;font-weight:700;cursor:pointer}
+.quick-query button:hover{background:#047857}
+
+/* ===== Tool Cards ===== */
+.tool-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin-bottom:20px}
+.tool-card{display:block;background:var(--card-bg);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px;text-align:center;border-top:4px solid var(--primary);text-decoration:none;color:var(--text);transition:all .2s}
+.tool-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px);text-decoration:none}
+.tool-card .tool-icon{font-size:1.6rem;margin-bottom:8px}
+.tool-card .tool-name{font-size:1.05rem;font-weight:700;color:var(--primary-dark);margin-bottom:6px}
+.tool-card .tool-desc{font-size:.82rem;color:var(--text-secondary)}
+
+/* ===== Zhong banner ===== */
+.zhi-banner{background:linear-gradient(135deg,#059669 0%,#10b981 100%);border-radius:var(--radius);padding:20px;color:#fff;margin-bottom:20px;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.zhi-banner .zhi-text{flex:1}
+.zhi-banner .zhi-text h2{font-size:1.3rem;margin-bottom:6px}
+.zhi-banner .zhi-text p{opacity:.9;font-size:.9rem}
+.zhi-banner a{padding:12px 24px;border-radius:8px;background:#fff;color:#059669;font-weight:700;text-decoration:none;white-space:nowrap}
+
+/* ===== Timeline ===== */
+.progress-bar{background:#e2e8f0;border-radius:8px;height:8px;margin:8px 0;overflow:hidden}
+.progress-bar .fill{height:100%;background:linear-gradient(90deg,var(--success),var(--primary));border-radius:8px;transition:width .5s}
+.timeline{position:relative;padding-left:28px}
+.timeline::before{content:'';position:absolute;left:10px;top:0;bottom:0;width:3px;background:var(--border);border-radius:2px}
+.timeline-item{position:relative;padding:8px 0 8px 20px}
+.timeline-item::before{content:'';position:absolute;left:-22px;top:14px;width:12px;height:12px;border-radius:50%;background:var(--border);border:2px solid #fff;box-shadow:0 0 0 2px var(--border)}
+.timeline-item.done::before{background:var(--success);box-shadow:0 0 0 2px var(--success)}
+.timeline-item.current::before{background:var(--primary);box-shadow:0 0 0 2px var(--primary);animation:pulse 2s infinite}
+.timeline-item.current .date{color:var(--primary);font-weight:700}
+.timeline-item .date{font-size:.85rem;font-weight:600}
+.timeline-item .desc{font-size:.85rem;color:var(--text-secondary);margin-top:2px}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 2px var(--primary)}50%{box-shadow:0 0 0 6px rgba(26,86,219,.2)}}
+
+.alert{padding:12px 16px;border-radius:var(--radius-sm);margin:12px 0;font-size:.85rem}
+.alert-info{background:var(--primary-light);color:var(--primary-dark);border-left:4px solid var(--primary)}
+.alert-warning{background:#fef3c7;color:#92400e;border-left:4px solid var(--warning)}
+
+/* ===== 升学路径 ===== */
+.path-section{padding:4px 0}
+.path-tree-header{font-size:1.2rem;font-weight:700;color:var(--primary-dark);margin:24px 0 16px;padding-bottom:8px;border-bottom:3px solid var(--primary-light)}
+.path-branch{margin:16px 0;padding:16px 20px;background:var(--card-bg);border-radius:var(--radius-sm);border-left:4px solid #3b82f6;box-shadow:var(--shadow)}
+.path-branch-green{border-left-color:var(--success)}
+.path-branch h4{font-size:1.05rem;margin-bottom:8px;color:var(--primary-dark)}
+.path-branch-green h4{color:var(--success)}
+.path-steps{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0}
+.path-step{background:#f1f5f9;padding:6px 14px;border-radius:20px;font-size:.82rem;font-weight:500;color:var(--text);white-space:nowrap}
+.path-step.highlight{background:var(--primary-light);color:var(--primary-dark);font-weight:700}
+.path-arrow{color:var(--text-secondary);font-size:1rem;font-weight:700}
+.path-info{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;margin-top:8px;font-size:.82rem}
+.path-info-item{display:flex;gap:6px}
+.path-info-item .pi-label{color:var(--text-secondary);flex-shrink:0}
+.path-info-item .pi-value{font-weight:600}
+
+/* Sub path cards */
+.sub-path-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px;margin-top:12px}
+.sub-path-card{background:#f8fafc;border-radius:var(--radius-sm);padding:14px;border:1px solid var(--border)}
+.sub-path-card .sp-title{font-weight:700;font-size:.9rem;margin-bottom:4px;color:var(--primary-dark)}
+.sub-path-card .sp-desc{font-size:.78rem;color:var(--text-secondary);line-height:1.5}
+.sub-path-card .sp-meta{font-size:.75rem;color:var(--text-secondary);margin-top:6px;display:flex;gap:12px;flex-wrap:wrap}
+
+/* ===== District grid (in putong tab) ===== */
+.district-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
+.district-card{display:block;background:var(--card-bg);border-radius:var(--radius);box-shadow:var(--shadow);padding:14px;text-align:center;transition:all .2s;border:2px solid transparent;text-decoration:none;color:var(--text)}
+.district-card:hover{border-color:var(--primary);box-shadow:var(--shadow-lg);transform:translateY(-2px);text-decoration:none}
+.district-card h4{font-size:.9rem;color:var(--primary-dark);margin-bottom:2px}
+.district-card p{font-size:.7rem;color:var(--text-secondary)}
+
+/* Dashboard inline (putong tab) */
+.putong-hero{text-align:center;padding:24px 0 16px}
+.putong-hero h2{font-size:1.5rem;color:var(--primary-dark);margin-bottom:4px}
+.putong-hero p{color:var(--text-secondary);font-size:.9rem}
+.putong-hero .cta-btn{display:inline-block;margin-top:12px;padding:10px 28px;background:var(--primary);color:#fff;border-radius:8px;font-weight:600;text-decoration:none;font-size:.95rem}
+.putong-hero .cta-btn:hover{background:var(--primary-dark);text-decoration:none}
+
+.footer{text-align:center;padding:24px;color:var(--text-secondary);font-size:.8rem;border-top:1px solid var(--border);margin-top:32px}
+
+@media(max-width:768px){
+  .nav-inner{height:auto;padding:8px 0}
+  .main-tabs{width:100%;justify-content:center}
+  .nav-links{display:none}
+  .grid-2,.grid-3{grid-template-columns:1fr}
+  .header h1{font-size:1.3rem}
+  .quick-query input{width:100%;margin-right:0;margin-bottom:8px}
+  .quick-query button{width:100%}
+  .zhi-banner{flex-direction:column;text-align:center}
+  .sub-path-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nav-logo"><a href="index.html">上海中考招生信息</a></div>
+    <div class="main-tabs">
+      <button class="main-tab active" onclick="switchTab('putong')">普高<span class="tab-badge tab-badge-pt">1-15志愿</span></button>
+      <button class="main-tab" onclick="switchTab('zhongzhi')">中职<span class="tab-badge tab-badge-zz">贯通+中专</span></button>
+    </div>
+  </div>
+  <div class="nav-links">
+    <a href="mengoe.html">名额分配</a>
+    <a href="query.html">查询工具</a>
+    <a href="https://www.shmeea.edu.cn/page/03000/index.html" target="_blank">官方公告</a>
+    <a href="#lujing">升学路径</a>
+  </div>
+</nav>
+
+<div class="container">
+
+<div class="header">
+  <h1>上海中考招生信息门户</h1>
+  <p>2026年中考日程跟踪 · 近3年录取数据参考 · 普高/中职双通道 · 升学路径体系化</p>
+</div>
+
+<!-- ============== 普高 Tab ============== -->
+<div class="content-tabs active" id="tab-putong">
+
+  <!-- Quick Query -->
+  <div class="quick-query">
+    <h2>快速分数查询</h2>
+    <p>输入中考分数，立即了解可报考学校类型和推荐学校</p>
+    <div>
+      <input type="number" id="homeScore" min="400" max="750" step="0.5" placeholder="输入分数" />
+      <button onclick="goQuery()">查询推荐</button>
+    </div>
+    <p style="margin-top:10px;font-size:.8rem;opacity:.7">满分750分 | 基于2025年录取数据，2026年数据将于7月23日后更新</p>
+  </div>
+
+  <!-- Tool Cards -->
+  <div class="tool-cards">
+    <a href="putong.html" class="tool-card" style="border-top-color:#3b82f6">
+      <div class="tool-icon">📊</div>
+      <div class="tool-name">普高数据看板</div>
+      <div class="tool-desc">16区环形图、可下钻条形图、分数段分布</div>
+    </a>
+    <a href="query.html" class="tool-card" style="border-top-color:#d97706">
+      <div class="tool-icon">🔍</div>
+      <div class="tool-name">分数查询工具</div>
+      <div class="tool-desc">输入分数，推荐学校类型和具体学校</div>
+    </a>
+    <a href="#lujing" class="tool-card" style="border-top-color:#8b5cf6" onclick="document.getElementById('lujing').scrollIntoView({behavior:'smooth'})">
+      <div class="tool-icon">🗺️</div>
+      <div class="tool-name">升学路径图</div>
+      <div class="tool-desc">普高/中职全路径体系、控分线、适合人群</div>
+    </a>
+    <a href="https://www.shmeea.edu.cn/page/03000/index.html" target="_blank" class="tool-card" style="border-top-color:#7c3aed">
+      <div class="tool-icon">📢</div>
+      <div class="tool-name">官方公告</div>
+      <div class="tool-desc">直达上海市教育考试院官网</div>
+    </a>
+  </div>
+
+  <!-- Data Dashboard Preview -->
+  <div class="putong-hero" style="background:linear-gradient(135deg,#eff6ff 0%,#dbeafe 100%);border-radius:var(--radius);margin-bottom:20px">
+    <h2>普高统一招生录取数据（展示2025年数据）</h2>
+    <p>4区数据已采集（杨浦·青浦·虹口·嘉定），12区采集中 | 点击进入交互式数据看板</p>
+    <a href="putong.html" class="cta-btn">进入普高数据看板 →</a>
+  </div>
+
+  <!-- 2026 名额分配入口 -->
+  <div class="putong-hero" style="background:linear-gradient(135deg,#f5f3ff 0%,#ede9fe 100%);border-radius:var(--radius);margin-bottom:20px;border:1px solid #ddd6fe">
+    <h2 style="color:#6D28D9">2026年名额分配录取分数线（到区947条 + 到校3772条）</h2>
+    <p>7月20日公布，含同分优待、综评、语数外、数学、语文、综合测试分档，按区查看</p>
+    <a href="mengoe.html" class="cta-btn" style="background:#7C3AED">查看名额分配分数线 →</a>
+  </div>
+
+  <!-- Key Stats -->
+  <div class="stat-cards">
+    <div class="stat-card"><div class="label">2026年考生</div><div class="value">约13.8万</div><div class="change" style="color:var(--warning)">2025年为12.7万</div></div>
+    <div class="stat-card"><div class="label">2026自招/名额分配控分线</div><div class="value">615分</div><div class="change up">↑10</div></div>
+    <div class="stat-card"><div class="label">2026普高统一招生控分线</div><div class="value">501分</div><div class="change down">↓12</div></div>
+    <div class="stat-card"><div class="label">2026中本贯通控分线</div><div class="value">501分</div><div class="change down">↓12</div></div>
+    <div class="stat-card"><div class="label">五年一贯制/中高职贯通</div><div class="value">400分</div><div class="change">持平（与2025相同）</div></div>
+  </div>
+
+  <!-- District Quick Links -->
+  <div class="card">
+    <h3>16区1-15志愿录取分数线</h3>
+    <p style="color:var(--text-secondary);margin-bottom:12px;font-size:.85rem">点击进入普高数据看板查看可交互图表，下方为快速入口</p>
+    <div class="district-grid">
+      <a href="putong.html" class="district-card" onclick="sessionStorage.setItem('zk-district','杨浦区')"><h4>杨浦区</h4><p>复附+控江</p><span class="badge badge-green">2025已采集</span></a>
+      <a href="putong.html" class="district-card" onclick="sessionStorage.setItem('zk-district','青浦区')"><h4>青浦区</h4><p>复附青浦</p><span class="badge badge-green">2025已采集</span></a>
+      <a href="putong.html" class="district-card" onclick="sessionStorage.setItem('zk-district','虹口区')"><h4>虹口区</h4><p>复旦复兴</p><span class="badge badge-green">2025已采集</span></a>
+      <a href="putong.html" class="district-card" onclick="sessionStorage.setItem('zk-district','嘉定区')"><h4>嘉定区</h4><p>交附嘉定</p><span class="badge badge-green">2025已采集</span></a>
+      <a href="putong.html" class="district-card"><h4>浦东新区</h4><p>考生最多</p><span class="badge badge-yellow">采集中</span></a>
+      <a href="putong.html" class="district-card"><h4>徐汇区</h4><p>上中+南模</p><span class="badge badge-yellow">采集中</span></a>
+      <a href="putong.html" class="district-card"><h4>闵行区</h4><p>七宝领衔</p><span class="badge badge-yellow">采集中</span></a>
+      <a href="putong.html" class="district-card"><h4>黄浦区</h4><p>格致+大同</p><span class="badge badge-yellow">采集中</span></a>
+      <a href="putong.html" class="district-card"><h4>宝山区</h4><p>华二宝山</p><span class="badge badge-yellow">采集中</span></a>
+      <a href="putong.html" class="district-card"><h4>松江区</h4><p>松二+华二松江</p><span class="badge badge-yellow">采集中</span></a>
+      <a href="putong.html" class="district-card"><h4>普陀区</h4><p>曹二+华二普陀</p><span class="badge badge-yellow">采集中</span></a>
+      <a href="putong.html" class="district-card"><h4>静安区</h4><p>市西+市北</p><span class="badge badge-yellow">采集中</span></a>
+      <a href="putong.html" class="district-card"><h4>长宁区</h4><p>延安+市三</p><span class="badge badge-yellow">采集中</span></a>
+      <a href="putong.html" class="district-card"><h4>金山区</h4><p>金山中学</p><span class="badge badge-yellow">采集中</span></a>
+      <a href="putong.html" class="district-card"><h4>奉贤区</h4><p>奉贤中学</p><span class="badge badge-yellow">采集中</span></a>
+      <a href="putong.html" class="district-card"><h4>崇明区</h4><p>崇明中学</p><span class="badge badge-yellow">采集中</span></a>
+    </div>
+  </div>
+
+  <!-- Near-year control line comparison -->
+  <div class="card">
+    <h3>近2年全市最低投档控制线对比</h3>
+    <table>
+      <thead><tr><th>批次</th><th>类别</th><th>2024年</th><th>2025年</th><th>变化</th></tr></thead>
+      <tbody>
+        <tr><td rowspan="3" style="text-align:left;font-weight:600">普通高中</td><td style="text-align:left">自主招生录取</td><td>607</td><td>605</td><td class="down">↓2</td></tr>
+        <tr><td style="text-align:left">名额分配综合评价</td><td>607</td><td>605</td><td class="down">↓2</td></tr>
+        <tr><td style="text-align:left">统一招生录取</td><td>518</td><td>513</td><td class="down">↓5</td></tr>
+        <tr><td rowspan="3" style="text-align:left;font-weight:600">中职校</td><td style="text-align:left">中本贯通</td><td>518</td><td>513</td><td class="down">↓5</td></tr>
+        <tr><td style="text-align:left">五年一贯制/中高职贯通</td><td>400</td><td>400</td><td>—</td></tr>
+        <tr><td style="text-align:left">普通中专</td><td>360</td><td>350</td><td class="down">↓10</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Four Elite Schools -->
+  <div class="card">
+    <h3>四校统一招生录取线</h3>
+    <table>
+      <thead><tr><th>学校</th><th>2024年</th><th>2025年</th><th>变化</th></tr></thead>
+      <tbody>
+        <tr><td style="text-align:left">上海中学</td><td>710</td><td>711</td><td class="up">↑1</td></tr>
+        <tr><td style="text-align:left">华师大二附中</td><td>706</td><td>709.5</td><td class="up">↑3.5</td></tr>
+        <tr><td style="text-align:left">复旦附中</td><td>708</td><td>708</td><td>—</td></tr>
+        <tr><td style="text-align:left">交大附中</td><td>707.5</td><td>707.5</td><td>—</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Score segment reference -->
+  <div class="card">
+    <h3>分数段定位参考（基于2025年数据）</h3>
+    <table>
+      <thead><tr><th>分数段</th><th>目标学校类型</th><th>代表学校（2025年分数线）</th></tr></thead>
+      <tbody>
+        <tr style="background:#fce4ec"><td style="font-weight:600">700+</td><td>四校</td><td style="text-align:left">上中711、华二709.5、复附708、交附707.5</td></tr>
+        <tr><td style="font-weight:600">680–700</td><td>四校分校、顶尖市重点</td><td style="text-align:left">复附浦东703.5、建平699.5、七宝699、交附嘉定689</td></tr>
+        <tr><td style="font-weight:600">650–680</td><td>优质市重点</td><td style="text-align:left">控江690、曹杨二中692、松江二中692、杨高683.5</td></tr>
+        <tr><td style="font-weight:600">600–650</td><td>普通市重点/区重点</td><td style="text-align:left">青浦高级668.5、朱家角656、嘉定一中677</td></tr>
+        <tr><td style="font-weight:600">513–600</td><td>普高/民办/中职优质</td><td style="text-align:left">东湖603、青浦二中570.5、中本贯通热门</td></tr>
+        <tr style="background:#e8f5e9"><td style="font-weight:600">&lt;513</td><td>中职教育体系</td><td style="text-align:left"><a href="zhongzhi.html">中本贯通/中高职贯通/中专/技校</a></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<!-- ============== 中职 Tab ============== -->
+<div class="content-tabs" id="tab-zhongzhi">
+
+  <!-- Banner -->
+  <div class="zhi-banner">
+    <div class="zhi-text">
+      <h2>职业教育同样精彩</h2>
+      <p>2025年中本贯通76个专业，最高分677分（超多所市重点）！了解中本贯通、五年一贯制、中高职贯通、普通中专、技校等多元成才路径。</p>
+    </div>
+    <a href="zhongzhi.html">进入中职教育专题 →</a>
+  </div>
+
+  <!-- Tool Cards for Zhongzhi -->
+  <div class="tool-cards">
+    <a href="zhongzhi.html" class="tool-card" style="border-top-color:#059669">
+      <div class="tool-icon">🎓</div>
+      <div class="tool-name">中职教育专题</div>
+      <div class="tool-desc">中本/五年一贯制/中高职贯通完整分数线</div>
+    </a>
+    <a href="zhongzhi.html#dashboard" class="tool-card" style="border-top-color:#3b82f6">
+      <div class="tool-icon">📊</div>
+      <div class="tool-name">数据分析看板</div>
+      <div class="tool-desc">行业分布环形图、平均分条形图、分数段分布</div>
+    </a>
+    <a href="#lujing" class="tool-card" style="border-top-color:#8b5cf6" onclick="document.getElementById('lujing').scrollIntoView({behavior:'smooth'})">
+      <div class="tool-icon">🗺️</div>
+      <div class="tool-name">升学路径图</div>
+      <div class="tool-desc">中本贯通(3+4)、五年一贯制、中高职贯通(3+2)</div>
+    </a>
+    <a href="query.html" class="tool-card" style="border-top-color:#d97706">
+      <div class="tool-icon">🔍</div>
+      <div class="tool-name">分数查询工具</div>
+      <div class="tool-desc">输入分数，推荐可报考的中职专业</div>
+    </a>
+  </div>
+
+  <!-- Key data cards -->
+  <div class="stat-cards">
+    <div class="stat-card"><div class="label">中本贯通专业数</div><div class="value">76</div><div class="change">3+4直达本科</div></div>
+    <div class="stat-card"><div class="label">五年一贯制专业数</div><div class="value">69</div><div class="change">5年制大专</div></div>
+    <div class="stat-card"><div class="label">中高职贯通专业数</div><div class="value">208</div><div class="change">3+2模式大专</div></div>
+    <div class="stat-card"><div class="label">中本最高分</div><div class="value">677</div><div class="change" style="color:var(--warning)">商会信安·上海电力大学</div></div>
+    <div class="stat-card"><div class="label">2026中本贯通控分线</div><div class="value">501</div><div class="change down">↓12</div></div>
+    <div class="stat-card"><div class="label">2026五年/中高职控分线</div><div class="value">400</div><div class="change" style="color:var(--success)">持平</div></div>
+  </div>
+
+  <!-- Zhongzhi paths overview -->
+  <div class="card">
+    <h3>中职教育五大路径速览</h3>
+    <div class="sub-path-grid">
+      <div class="sub-path-card" style="border-left:3px solid #dc2626">
+        <div class="sp-title">中本贯通 (3+4)</div>
+        <div class="sp-desc">3年中职 + 4年本科，毕业获全日制本科文凭。2025年76个专业招生，最低控分线513分，最高677分。</div>
+        <div class="sp-meta"><span>学制：7年</span><span>控分线：513</span><span>学历：本科</span></div>
+      </div>
+      <div class="sub-path-card" style="border-left:3px solid #f59e0b">
+        <div class="sp-title">五年一贯制</div>
+        <div class="sp-desc">同一高职院校连续培养5年，毕业获全日制大专文凭。2025年69个专业招生，最低控分线400分。</div>
+        <div class="sp-meta"><span>学制：5年</span><span>控分线：400</span><span>学历：大专</span></div>
+      </div>
+      <div class="sub-path-card" style="border-left:3px solid #3b82f6">
+        <div class="sp-title">中高职贯通 (3+2)</div>
+        <div class="sp-desc">3年中职 + 2年高职，毕业获全日制大专文凭。2025年208个专业，最低控分线400分。</div>
+        <div class="sp-meta"><span>学制：5年</span><span>控分线：400</span><span>学历：大专</span></div>
+      </div>
+      <div class="sub-path-card" style="border-left:3px solid #10b981">
+        <div class="sp-title">普通中专</div>
+        <div class="sp-desc">3年制中等专业教育，可参加三校生高考升入本科/大专。最低控分线350分。</div>
+        <div class="sp-meta"><span>学制：3年</span><span>控分线：350</span><span>学历：中专→可升</span></div>
+      </div>
+      <div class="sub-path-card" style="border-left:3px solid #64748b">
+        <div class="sp-title">技工学校</div>
+        <div class="sp-desc">培养技能型人才，注重实操。可参加三校生高考继续深造，也可直接就业。</div>
+        <div class="sp-meta"><span>学制：3年</span><span>控分线：350</span><span>方向：技能型</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Score segment -->
+  <div class="card">
+    <h3>中本贯通分数段分布（2025年）</h3>
+    <table>
+      <thead><tr><th>分数段</th><th>专业数</th><th>占比</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td style="font-weight:600">670+</td><td>3</td><td>3.9%</td><td style="text-align:left">顶尖专业，竞争最激烈</td></tr>
+        <tr><td style="font-weight:600">650–670</td><td>18</td><td>23.7%</td><td style="text-align:left">热门专业，多为医药/电力类</td></tr>
+        <tr><td style="font-weight:600">620–650</td><td>28</td><td>36.8%</td><td style="text-align:left">主流分数段</td></tr>
+        <tr><td style="font-weight:600">600–620</td><td>19</td><td>25.0%</td><td style="text-align:left">普通专业</td></tr>
+        <tr><td style="font-weight:600">513–600</td><td>8</td><td>10.5%</td><td style="text-align:left">刚过控分线</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<!-- ============== 中考进度 Timeline ============== -->
+<div class="card" style="border-left:4px solid var(--primary)">
+  <h3>2026年中考进度</h3>
+  <div style="margin-bottom:12px">
+    <div style="display:flex;justify-content:space-between;font-size:.85rem;color:var(--text-secondary);margin-bottom:4px">
+      <span>整体进度</span><span><strong style="color:var(--primary)">87%</strong>（统一招生录取阶段）</span>
+    </div>
+    <div class="progress-bar"><div class="fill" style="width:87%"></div></div>
+  </div>
+  <div class="timeline">
+    <div class="timeline-item done">
+      <div class="date">6月20-21日 · 中考笔试 ✅</div>
+      <div class="desc">语文、数学、外语、综合测试、历史、道德与法治 · 已平稳开考（官方确认）</div>
+    </div>
+    <div class="timeline-item done">
+      <div class="date">6月23-28日 · 志愿填报及书面确认 ✅</div>
+      <div class="desc">完成1-15志愿填报及签字确认</div>
+    </div>
+    <div class="timeline-item done">
+      <div class="date">7月14日 · 成绩公布 + 控分线公布 ✅</div>
+      <div class="desc">上海市教育考试院统一发布，可通过 shmeea.edu.cn 查询</div>
+    </div>
+    <div class="timeline-item done">
+      <div class="date">7月17日 · 自招正式录取名单 ✅</div>
+      <div class="desc">自主招生批次正式录取结果</div>
+    </div>
+    <div class="timeline-item done">
+      <div class="date">7月19日 · 中职校自招录取 ✅</div>
+      <div class="desc">中职校自主招生录取结果公布，中本贯通/五年一贯制/中高职贯通分数线已发布</div>
+    </div>
+    <div class="timeline-item done">
+      <div class="date">7月20日 · 名额分配到区/到校分数线 ✅</div>
+      <div class="desc">名额分配综合评价录取分数线已公布，<a href="mengoe.html">查看完整分数线 →</a></div>
+    </div>
+    <div class="timeline-item done">
+      <div class="date">7月23日 · 统一招生录取 + 通知书发放 ✅</div>
+      <div class="desc">1-15志愿录取结果公布，民办高中征求志愿计划余额同步发布，录取通知书寄送</div>
+    </div>
+  </div>
+  <div class="alert alert-info" style="margin-top:12px">
+    <strong>2026年官方确认：</strong>中考成绩已于7月14日公布，7月19日中职校自招录取、7月20日名额分配到区/到校、7月23日统一招生录取（1-15志愿）结果均已公布。当前处于统一招生录取阶段，民办高中征求志愿录取进行中。
+  </div>
+</div>
+
+<!-- ============== 升学路径说明 ============== -->
+<div class="card" id="lujing">
+  <h3>上海中考升学路径体系</h3>
+  <p style="color:var(--text-secondary);margin-bottom:16px;font-size:.85rem">初中毕业后，考生可选择普高路径或中职路径，三条主线最终均可通向本科/专科</p>
+
+  <!-- Main tree -->
+  <div style="background:#f8fafc;border-radius:var(--radius-sm);padding:16px 20px;margin-bottom:16px;text-align:center;font-size:.95rem;font-weight:700;color:var(--primary-dark)">
+    初中毕业（参加上海中考，满分750分）
+  </div>
+
+  <div class="grid-2" style="margin-bottom:16px">
+    <!-- 普高路径 -->
+    <div class="path-branch">
+      <h4>路径一：普通高中 → 高考</h4>
+      <div class="path-steps">
+        <span class="path-step highlight">自主招生</span>
+        <span class="path-arrow">→</span>
+        <span class="path-step highlight">名额分配到区</span>
+        <span class="path-arrow">→</span>
+        <span class="path-step highlight">名额分配到校</span>
+        <span class="path-arrow">→</span>
+        <span class="path-step highlight">1-15志愿统一录取</span>
+      </div>
+      <div class="sub-path-grid" style="margin-top:12px">
+        <div class="sub-path-card">
+          <div class="sp-title">自主招生</div>
+          <div class="sp-desc">市重点高中+特色高中提前选拔。2025年控分线：605分。</div>
+          <div class="sp-meta"><span>适合：综合素质优秀</span><span>控分线：605</span></div>
+        </div>
+        <div class="sub-path-card">
+          <div class="sp-title">名额分配到区</div>
+          <div class="sp-desc">市重点将名额分配到各区，按区内排名录取。2025年控分线：605分。</div>
+          <div class="sp-meta"><span>适合：区内排名靠前</span><span>控分线：605</span></div>
+        </div>
+        <div class="sub-path-card">
+          <div class="sp-title">名额分配到校</div>
+          <div class="sp-desc">市重点将名额分配到各初中学校，校内竞争。2025年控分线：605分。</div>
+          <div class="sp-meta"><span>适合：校内排名靠前</span><span>控分线：605</span></div>
+        </div>
+        <div class="sub-path-card">
+          <div class="sp-title">1-15志愿统一录取</div>
+          <div class="sp-desc">最多填报15个平行志愿，按分数从高到低录取。2025年控分线：513分。</div>
+          <div class="sp-meta"><span>适合：所有考生</span><span>控分线：513</span></div>
+        </div>
+      </div>
+      <div style="margin-top:10px;padding:10px;background:#eff6ff;border-radius:6px;font-size:.85rem;text-align:center">
+        <strong>→ 高考 → 本科 / 专科</strong>（3年高中 + 4/3年大学）
+      </div>
+    </div>
+
+    <!-- 中职路径 -->
+    <div class="path-branch path-branch-green">
+      <h4>路径二 & 路径三：中职校 → 升学/就业</h4>
+      <div class="sub-path-grid" style="margin-top:8px">
+        <div class="sub-path-card" style="border-left:3px solid #dc2626">
+          <div class="sp-title">中本贯通（3+4）</div>
+          <div class="sp-desc">3年中职 + 4年应用型本科，毕业获全日制本科文凭。2025年76个专业，最高分677分。</div>
+          <div class="sp-meta"><span>适合：513-677分</span><span>学历：本科</span><span>控分线：513</span></div>
+        </div>
+        <div class="sub-path-card" style="border-left:3px solid #f59e0b">
+          <div class="sp-title">五年一贯制</div>
+          <div class="sp-desc">同一高职院校连续培养5年，毕业获全日制大专文凭。2025年69个专业。</div>
+          <div class="sp-meta"><span>适合：400分以上</span><span>学历：大专</span><span>控分线：400</span></div>
+        </div>
+        <div class="sub-path-card" style="border-left:3px solid #3b82f6">
+          <div class="sp-title">中高职贯通（3+2）</div>
+          <div class="sp-desc">3年中职 + 2年高职，毕业获全日制大专文凭。2025年208个专业。</div>
+          <div class="sp-meta"><span>适合：400分以上</span><span>学历：大专</span><span>控分线：400</span></div>
+        </div>
+        <div class="sub-path-card" style="border-left:3px solid #10b981">
+          <div class="sp-title">普通中专 / 职校 / 技校</div>
+          <div class="sp-desc">3年制，可参加三校生高考升本科/大专，也可直接就业。2025年控分线350分。</div>
+          <div class="sp-meta"><span>适合：350分以上</span><span>学历：中专→可升</span><span>控分线：350</span></div>
+        </div>
+      </div>
+      <div style="margin-top:10px;padding:10px;background:#d1fae5;border-radius:6px;font-size:.85rem;text-align:center">
+        <strong>→ 三校生高考 / 专升本 → 本科 / 专科</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- Summary timeline -->
+  <div style="padding:16px;background:#f1f5f9;border-radius:var(--radius-sm);margin-top:8px">
+    <div class="path-steps" style="justify-content:center;flex-wrap:wrap">
+      <span class="path-step" style="background:#dbeafe">初中 4年</span>
+      <span class="path-arrow">→</span>
+      <span class="path-step highlight">中考</span>
+      <span class="path-arrow">↗</span>
+      <span class="path-step" style="background:#dbeafe">普高 3年</span>
+      <span class="path-arrow">→</span>
+      <span class="path-step" style="background:#dbeafe">高考</span>
+      <span class="path-arrow">→</span>
+      <span class="path-step" style="background:#fef3c7">本科/专科</span>
+    </div>
+    <div class="path-steps" style="justify-content:center;flex-wrap:wrap;margin-top:8px">
+      <span class="path-step" style="background:#dbeafe">初中 4年</span>
+      <span class="path-arrow">→</span>
+      <span class="path-step highlight">中考</span>
+      <span class="path-arrow">↘</span>
+      <span class="path-step" style="background:#d1fae5">中本贯通 3+4年</span>
+      <span class="path-arrow">→</span>
+      <span class="path-step" style="background:#fef3c7">本科</span>
+    </div>
+    <div class="path-steps" style="justify-content:center;flex-wrap:wrap;margin-top:8px">
+      <span class="path-step" style="background:#dbeafe">初中 4年</span>
+      <span class="path-arrow">→</span>
+      <span class="path-step highlight">中考</span>
+      <span class="path-arrow">↘</span>
+      <span class="path-step" style="background:#d1fae5">五年/中高职 5年</span>
+      <span class="path-arrow">→</span>
+      <span class="path-step" style="background:#fef3c7">大专</span>
+      <span class="path-arrow">→</span>
+      <span class="path-step" style="background:#fef3c7">专升本→本科</span>
+    </div>
+    <div style="text-align:center;margin-top:8px;font-size:.78rem;color:var(--text-secondary)">
+      以上三条路径均可最终获得本科学历。中本贯通免高考直达本科，是"曲线救国"的优质选择。
+    </div>
+  </div>
+</div>
+
+<!-- ============== 官方公告 ============== -->
+<div class="card" style="border-left:4px solid #059669">
+  <h3>官方最新公告（来源：shmeea.edu.cn）</h3>
+  <div style="font-size:.9rem">
+    <div style="padding:8px 0;border-bottom:1px solid #e2e8f0">
+      <a href="https://www.shmeea.edu.cn/page/03500/20260620/20359.html" target="_blank" style="font-weight:600">2026年上海市初中学业水平考试平稳开考</a>
+      <span class="badge badge-green" style="margin-left:8px">最新</span>
+      <div style="color:#64748b;font-size:.8rem;margin-top:2px">2026-06-20</div>
+    </div>
+    <div style="padding:8px 0;border-bottom:1px solid #e2e8f0">
+      <a href="https://www.shmeea.edu.cn/page/03400/20260621/20362.html" target="_blank">2026年上海市中职校招收随迁子女志愿填报即将开始</a>
+      <div style="color:#64748b;font-size:.8rem;margin-top:2px">2026-06-21</div>
+    </div>
+    <div style="padding:8px 0;border-bottom:1px solid #e2e8f0">
+      <a href="https://www.shmeea.edu.cn/page/03400/20260621/20361.html" target="_blank">2026年上海市高中阶段学校招生志愿填报即将开始</a>
+      <div style="color:#64748b;font-size:.8rem;margin-top:2px">2026-06-21</div>
+    </div>
+    <div style="padding:8px 0">
+      <a href="https://www.shmeea.edu.cn/page/03000/index.html" target="_blank" style="color:#059669;font-weight:600">查看全部官方公告 →</a>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<div class="footer">
+  <p>数据来源：上海市教育考试院（shmeea.edu.cn）及各教育局官网 | 官方信息更新至2026年7月</p>
+  <p>2026年数据预计7月14日起陆续公布 | <a href="putong.html">普高数据看板</a> · <a href="zhongzhi.html">中职教育专题</a> · <a href="query.html">分数查询工具</a></p>
+</div>
+
+<script>
+function switchTab(tab) {
+  document.querySelectorAll('.main-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.content-tabs').forEach(c => c.classList.remove('active'));
+  if (tab === 'putong') {
+    document.querySelectorAll('.main-tab')[0].classList.add('active');
+    document.getElementById('tab-putong').classList.add('active');
+  } else {
+    document.querySelectorAll('.main-tab')[1].classList.add('active');
+    document.getElementById('tab-zhongzhi').classList.add('active');
+  }
+}
+
+function goQuery() {
+  const score = document.getElementById('homeScore').value;
+  if (score && !isNaN(score)) {
+    window.location.href = 'query.html#' + score;
+  } else {
+    window.location.href = 'query.html';
+  }
+}
+document.getElementById('homeScore').addEventListener('keypress', function(e) {
+  if (e.key === 'Enter') goQuery();
+});
+</script>
+</body>
+</html>

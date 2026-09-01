@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>分数查询工具 | 上海中考招生信息</title>
+<style>
+:root {--primary:#1a56db;--primary-light:#e8f0fe;--primary-dark:#1340a0;--success:#059669;--warning:#d97706;--danger:#dc2626;--bg:#f8fafc;--card-bg:#fff;--text:#1e293b;--text-secondary:#64748b;--border:#e2e8f0;--shadow:0 1px 3px rgba(0,0,0,.08);--shadow-lg:0 10px 25px rgba(0,0,0,.08);--radius:12px;--radius-sm:8px;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+a{color:var(--primary);text-decoration:none}a:hover{text-decoration:underline}
+.nav{background:linear-gradient(135deg,#0f2b6b 0%,#1a56db 100%);color:#fff;padding:0 24px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.nav-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;height:56px;gap:16px;flex-wrap:wrap}
+.nav-logo{font-size:1.2rem;font-weight:700;white-space:nowrap}
+.nav-logo a{color:#fff;text-decoration:none}
+.nav-links{display:flex;gap:2px;overflow-x:auto;flex-wrap:wrap}
+.nav-links a{color:rgba(255,255,255,.85);padding:4px 8px;border-radius:6px;font-size:.78rem;white-space:nowrap;transition:all .2s}
+.nav-links a:hover,.nav-links a.active{background:rgba(255,255,255,.15);color:#fff;text-decoration:none}
+.container{max-width:1200px;margin:0 auto;padding:24px 20px}
+.card{background:var(--card-bg);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px;margin-bottom:20px}
+.card h3{font-size:1.1rem;margin-bottom:12px;color:var(--primary-dark);border-bottom:2px solid var(--primary-light);padding-bottom:8px}
+.footer{text-align:center;padding:24px;color:var(--text-secondary);font-size:.8rem;border-top:1px solid var(--border);margin-top:32px}
+.back-link{display:inline-block;margin-bottom:16px;font-size:.9rem}
+.header{text-align:center;padding:20px 0}
+.header h1{font-size:1.6rem;color:var(--primary-dark)}
+.header .breadcrumb{font-size:.85rem;color:var(--text-secondary);margin-top:4px}
+.header .breadcrumb a{color:var(--primary)}
+
+/* Query tool styles */
+.query-box{background:linear-gradient(135deg,#1a56db 0%,#3b82f6 100%);border-radius:var(--radius);padding:32px;text-align:center;color:#fff;margin-bottom:24px}
+.query-box h2{font-size:1.4rem;margin-bottom:12px}
+.query-box p{opacity:.9;margin-bottom:16px;font-size:.95rem}
+.score-input{display:flex;gap:12px;justify-content:center;align-items:center;flex-wrap:wrap}
+.score-input input{width:200px;padding:14px 20px;border-radius:8px;border:none;font-size:1.3rem;font-weight:700;text-align:center;outline:none}
+.score-input input:focus{box-shadow:0 0 0 3px rgba(255,255,255,.3)}
+.score-input button{padding:14px 32px;border-radius:8px;border:none;background:#059669;color:#fff;font-size:1.1rem;font-weight:700;cursor:pointer;transition:all .2s}
+.score-input button:hover{background:#047857;transform:translateY(-1px)}
+.result-section{display:none}
+.result-section.show{display:block}
+.tier-card{background:var(--card-bg);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px;margin-bottom:16px;border-left:5px solid var(--primary)}
+.tier-card.high{border-left-color:#dc2626}
+.tier-card.mid{border-left-color:#d97706}
+.tier-card.low{border-left-color:#059669}
+.tier-card.zhi{border-left-color:#7c3aed;background:linear-gradient(135deg,#faf5ff 0%,#f3e8ff 100%)}
+.tier-title{font-size:1.1rem;font-weight:700;margin-bottom:8px;color:var(--primary-dark)}
+.tier-card.high .tier-title{color:#dc2626}
+.tier-card.zhi .tier-title{color:#7c3aed}
+.tier-desc{font-size:.9rem;color:var(--text-secondary);margin-bottom:8px}
+.school-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.school-tag{display:inline-block;padding:4px 12px;border-radius:16px;font-size:.85rem;background:var(--primary-light);color:var(--primary-dark);text-decoration:none;transition:all .2s}
+.school-tag:hover{background:var(--primary);color:#fff;text-decoration:none}
+.school-tag.zhi-tag{background:#f3e8ff;color:#7c3aed}
+.school-tag.zhi-tag:hover{background:#7c3aed;color:#fff}
+.action-btns{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px}
+.hero-btn{display:inline-block;padding:10px 20px;border-radius:8px;font-weight:600;font-size:.9rem;text-decoration:none;transition:all .2s}
+.hero-btn-primary{background:var(--primary);color:#fff}
+.hero-btn-primary:hover{background:var(--primary-dark);color:#fff;text-decoration:none}
+.hero-btn-green{background:#059669;color:#fff}
+.hero-btn-green:hover{background:#047857;color:#fff;text-decoration:none}
+.hero-btn-outline{border:2px solid var(--primary);color:var(--primary);background:transparent}
+.hero-btn-outline:hover{background:var(--primary);color:#fff;text-decoration:none}
+.hero-btn-purple{background:#7c3aed;color:#fff}
+.hero-btn-purple:hover{background:#6d28d9;color:#fff;text-decoration:none}
+.tip-box{background:#f0fdf4;border-radius:var(--radius-sm);padding:16px;margin-top:16px;border-left:4px solid #059669}
+.tip-box h4{color:#065f46;margin-bottom:6px}
+.tip-box p{font-size:.85rem;color:#374151}
+@media(max-width:768px){.score-input{flex-direction:column}.score-input input{width:100%}.header h1{font-size:1.2rem}}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nav-logo"><a href="index.html">上海中考招生信息</a></div>
+    <div class="nav-links">
+      <a href="pudong.html">浦东</a><a href="xuhui.html">徐汇</a><a href="minhang.html">闵行</a>
+      <a href="yangpu.html">杨浦</a><a href="huangpu.html">黄浦</a><a href="baoshan.html">宝山</a>
+      <a href="songjiang.html">松江</a><a href="putuo.html">普陀</a><a href="qingpu.html">青浦</a>
+      <a href="jingan.html">静安</a><a href="changning.html">长宁</a><a href="hongkou.html">虹口</a>
+      <a href="jiading.html">嘉定</a><a href="jinshan.html">金山</a><a href="fengxian.html">奉贤</a>
+      <a href="chongming.html">崇明</a>
+      <a href="zhongzhi.html" style="color:#a7f3d0">中职教育</a>
+      <a href="query.html" class="active" style="color:#fde68a">查询工具</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+
+<div class="header">
+  <div class="breadcrumb"><a href="index.html">首页</a> &raquo; 分数查询工具</div>
+  <h1>中考分数查询工具</h1>
+  <p style="color:var(--text-secondary);margin-top:4px">输入分数，快速了解可报考学校类型和具体学校推荐</p>
+</div>
+
+<a href="index.html" class="back-link">&larr; 返回首页</a>
+
+<!-- 查询框 -->
+<div class="query-box">
+  <h2>输入你的中考分数</h2>
+  <p>基于2025年上海中考录取数据，2026年数据将于7月23日后更新</p>
+  <div class="score-input">
+    <input type="number" id="scoreInput" min="400" max="750" step="0.5" placeholder="输入分数" />
+    <button onclick="querySchool()">查询推荐</button>
+  </div>
+  <p style="margin-top:12px;font-size:.8rem;opacity:.7">满分750分 | 数据基于2025年录取分数线，2026年数据将于7月23日后更新</p>
+</div>
+
+<!-- 查询结果 -->
+<div id="resultSection" class="result-section">
+  <div id="resultContent"></div>
+  <div class="action-btns" style="margin-top:20px;justify-content:center">
+    <a href="zhongzhi.html" class="hero-btn hero-btn-green">了解中职教育 &rarr;</a>
+    <a href="index.html" class="hero-btn hero-btn-outline">返回首页</a>
+  </div>
+</div>
+
+<!-- 分数段说明（默认显示） -->
+<div id="defaultInfo">
+  <div class="card">
+    <h3>各分数段可报考学校类型参考</h3>
+    <p style="font-size:.9rem;color:var(--text-secondary);margin-bottom:16px">以下基于2025年上海中考录取数据，仅供参考，实际录取以各区教育局和考试院公布为准。</p>
+    
+    <div class="tier-card high">
+      <div class="tier-title">700分以上：四校及顶尖市重点</div>
+      <div class="tier-desc">可冲击上海中学、华师大二附中、复旦附中、交大附中等四校，以及各区顶尖市重点（建平、南模、七宝等）。</div>
+      <div class="school-tags">
+        <a href="pudong.html" class="school-tag">上中 711</a>
+        <a href="pudong.html" class="school-tag">华二 709.5</a>
+        <a href="pudong.html" class="school-tag">复附 708</a>
+        <a href="pudong.html" class="school-tag">交附 707.5</a>
+        <a href="pudong.html" class="school-tag">上实 703</a>
+        <a href="minhang.html" class="school-tag">七宝 699</a>
+        <a href="pudong.html" class="school-tag">建平 699.5</a>
+        <a href="xuhui.html" class="school-tag">南模 695.5</a>
+      </div>
+    </div>
+    
+    <div class="tier-card">
+      <div class="tier-title">680-700分：优质市重点</div>
+      <div class="tier-desc">可报考各区头部市重点，如进才中学、控江中学、曹杨二中、松江二中、格致中学、大同中学等。</div>
+      <div class="school-tags">
+        <a href="pudong.html" class="school-tag">进才 696.5</a>
+        <a href="yangpu.html" class="school-tag">控江 690</a>
+        <a href="putuo.html" class="school-tag">曹杨二中 692</a>
+        <a href="songjiang.html" class="school-tag">松江二中 692</a>
+        <a href="huangpu.html" class="school-tag">大同 697</a>
+        <a href="huangpu.html" class="school-tag">格致 695</a>
+        <a href="baoshan.html" class="school-tag">华二宝山 696</a>
+        <a href="songjiang.html" class="school-tag">华二松江 702</a>
+      </div>
+    </div>
+    
+    <div class="tier-card">
+      <div class="tier-title">650-680分：普通市重点 / 优质区重点</div>
+      <div class="tier-desc">可报考普通市重点（如杨浦高级、洋泾中学、川沙中学等），以及各区优质区重点和特色高中。</div>
+      <div class="school-tags">
+        <a href="yangpu.html" class="school-tag">杨高 683.5</a>
+        <a href="pudong.html" class="school-tag">洋泾 689.5</a>
+        <a href="pudong.html" class="school-tag">川沙 686.5</a>
+        <a href="qingpu.html" class="school-tag">复附青浦 689.5</a>
+        <a href="qingpu.html" class="school-tag">青浦高级 668.5</a>
+        <a href="xuhui.html" class="school-tag">位育 689</a>
+      </div>
+    </div>
+    
+    <div class="tier-card mid">
+      <div class="tier-title">600-650分：区重点 / 特色高中 / 优质普高</div>
+      <div class="tier-desc">可报考各区区重点、特色高中，以及部分优质普通高中。此分数段考生也可考虑中本贯通热门专业。</div>
+      <div class="school-tags">
+        <a href="qingpu.html" class="school-tag">朱家角 656</a>
+        <a href="qingpu.html" class="school-tag">青浦一中 631</a>
+        <a href="yangpu.html" class="school-tag">上理工附中 661</a>
+        <a href="zhongzhi.html" class="school-tag zhi-tag">中本贯通热门</a>
+      </div>
+    </div>
+    
+    <div class="tier-card low">
+      <div class="tier-title">513-600分：普通高中 / 民办高中 / 中职优质专业</div>
+      <div class="tier-desc">可报考普通/民办高中，或选择中职校优质专业（中本贯通、中高职贯通热门专业）。2025年普高线513分。</div>
+      <div class="school-tags">
+        <a href="qingpu.html" class="school-tag">东湖中学 603</a>
+        <a href="qingpu.html" class="school-tag">青浦二中 570.5</a>
+        <a href="zhongzhi.html" class="school-tag zhi-tag">中本贯通</a>
+        <a href="zhongzhi.html" class="school-tag zhi-tag">中高职贯通</a>
+      </div>
+    </div>
+    
+    <div class="tier-card zhi">
+      <div class="tier-title" style="color:#7c3aed">513分以下：中职教育体系（中本/中高职/中专/技校）</div>
+      <div class="tier-desc">可报考中本贯通（513分控分线）、五年一贯制/中高职贯通（400分控分线）、普通中专（350分控分线）、技工学校。职业教育同样可以升本、就业，是多元成才的重要路径。</div>
+      <div class="action-btns" style="margin-top:12px">
+        <a href="zhongzhi.html" class="hero-btn hero-btn-purple">详细了解中职教育 &rarr;</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="tip-box">
+    <h4>使用提示</h4>
+    <p>1. 以上推荐基于2025年录取数据，2026年数据将于7月23日后更新，届时将同步更新。<br>
+    2. 各区录取分数线差异较大，建议结合所在区的实际情况参考。<br>
+    3. 中本贯通热门专业分数线常超过600分，不要低估中职优质专业的竞争强度。<br>
+    4. 本工具仅供参考，志愿填报请结合官方政策和各校招生简章。</p>
+  </div>
+</div>
+
+</div>
+
+<script>
+// 学校数据库（基于2025年数据）
+const schools = [
+  // 四校
+  {name:"上海中学",score:711,type:"四校",district:"全市"},
+  {name:"华师大二附中",score:709.5,type:"四校",district:"全市"},
+  {name:"复旦附中",score:708,type:"四校",district:"全市"},
+  {name:"交大附中",score:707.5,type:"四校",district:"全市"},
+  // 四校分校
+  {name:"复附浦东",score:703.5,type:"四校分校",district:"浦东"},
+  {name:"华二松江",score:702,type:"四校分校",district:"松江"},
+  {name:"华二普陀",score:701.5,type:"四校分校",district:"普陀"},
+  {name:"华二宝山",score:696,type:"四校分校",district:"宝山"},
+  {name:"复附青浦",score:689.5,type:"四校分校",district:"青浦"},
+  {name:"华二紫竹",score:695,type:"四校分校",district:"闵行"},
+  {name:"交附闵分",score:697,type:"四校分校",district:"闵行"},
+  // 市重点
+  {name:"建平中学",score:699.5,type:"市重点",district:"浦东"},
+  {name:"七宝中学",score:699,type:"市重点",district:"闵行"},
+  {name:"进才中学",score:696.5,type:"市重点",district:"浦东"},
+  {name:"曹杨二中",score:692,type:"市重点",district:"普陀"},
+  {name:"松江二中",score:692,type:"市重点",district:"松江"},
+  {name:"控江中学",score:690,type:"市重点",district:"杨浦"},
+  {name:"南洋模范",score:695.5,type:"市重点",district:"徐汇"},
+  {name:"位育中学",score:689,type:"市重点",district:"徐汇"},
+  {name:"杨浦高级",score:683.5,type:"市重点",district:"杨浦"},
+  {name:"洋泾中学",score:689.5,type:"市重点",district:"浦东"},
+  {name:"川沙中学",score:686.5,type:"市重点",district:"浦东"},
+  {name:"大同中学",score:697,type:"市重点",district:"黄浦"},
+  {name:"格致中学",score:695,type:"市重点",district:"黄浦"},
+  {name:"向明中学",score:675,type:"市重点",district:"黄浦"},
+  {name:"青浦高级",score:668.5,type:"市重点",district:"青浦"},
+  {name:"朱家角中学",score:656,type:"市重点",district:"青浦"},
+  {name:"复旦复兴",score:680,type:"市重点",district:"虹口"},
+  {name:"华师一附中",score:670.5,type:"市重点",district:"虹口"},
+  {name:"市西中学",score:685,type:"市重点",district:"静安"},
+  {name:"市北中学",score:676.5,type:"市重点",district:"静安"},
+  {name:"延安中学",score:682.5,type:"市重点",district:"长宁"},
+  {name:"奉贤中学",score:679.5,type:"市重点",district:"奉贤"},
+  {name:"交附嘉定",score:689,type:"市重点",district:"嘉定"},
+  {name:"嘉定一中",score:677,type:"市重点",district:"嘉定"},
+  {name:"金山中学",score:670,type:"市重点",district:"金山"},
+  {name:"崇明中学",score:638,type:"市重点",district:"崇明"},
+];
+
+const zhongben = [
+  {name:"商会信安（信息安全）",score:677,school:"上海商业会计学校",univ:"上海电力大学"},
+  {name:"材料产设（产品设计）",score:656.5,school:"上海市材料工程学校",univ:"上海应用技术大学"},
+  {name:"商会会计",score:652.5,school:"上海商业会计学校",univ:"上海商学院"},
+  {name:"信息化学（应用化学）",score:642,school:"上海信息技术学校",univ:"上海应用技术大学"},
+  {name:"商外国贸",score:641.5,school:"上海市工商外国语学校",univ:"上海商学院"},
+  {name:"工业机械（机械工程）",score:640,school:"上海市工业技术学校",univ:"上海第二工业大学"},
+];
+
+function querySchool() {
+  const input = document.getElementById('scoreInput');
+  const score = parseFloat(input.value);
+  if (isNaN(score) || score < 400 || score > 750) {
+    alert('请输入400-750之间的有效分数');
+    return;
+  }
+  
+  document.getElementById('defaultInfo').style.display = 'none';
+  const resultSection = document.getElementById('resultSection');
+  resultSection.classList.add('show');
+  
+  let html = '';
+  const tier = getTier(score);
+  
+  if (score >= 700) {
+    html += buildTierCard('high', '700分以上：四校及顶尖市重点', 
+      '你的分数达到顶尖水平！可冲击四校及各区最顶尖市重点。', score, 'high');
+  } else if (score >= 680) {
+    html += buildTierCard('', '680-700分：优质市重点', 
+      '你的分数可以报考各区优质市重点，选择空间较大。', score, 'mid');
+  } else if (score >= 650) {
+    html += buildTierCard('', '650-680分：普通市重点 / 优质区重点', 
+      '可报考普通市重点及各区优质区重点、特色高中。', score, 'mid');
+  } else if (score >= 600) {
+    html += buildTierCard('', '600-650分：区重点 / 特色高中 / 中本贯通', 
+      '可报考区重点，或考虑中本贯通热门专业（部分专业分数线超600分）。', score, 'low');
+  } else if (score >= 513) {
+    html += buildTierCard('', '513-600分：普通高中 / 中职优质专业', 
+      '可报考普通/民办高中，或选择中职校优质专业。2025年普高控分线513分。', score, 'low');
+  } else {
+    html += buildTierCard('zhi', '513分以下：中职教育体系', 
+      '可报考中本贯通（513分控分线）、五年一贯制/中高职贯通（400分）、普通中专（350分）。职业教育是多元成才的重要路径！', score, 'zhi');
+  }
+  
+  // 推荐具体学校
+  html += buildSchoolRecommend(score);
+  
+  // 中职推荐
+  if (score >= 400) {
+    html += buildZhongzhiRecommend(score);
+  }
+  
+  document.getElementById('resultContent').innerHTML = html;
+  resultSection.scrollIntoView({behavior:'smooth'});
+}
+
+function getTier(score) {
+  if (score >= 700) return '四校及顶尖市重点';
+  if (score >= 680) return '优质市重点';
+  if (score >= 650) return '普通市重点';
+  if (score >= 600) return '区重点/中本贯通';
+  if (score >= 513) return '普高/中职优质';
+  return '中职体系';
+}
+
+function buildTierCard(cls, title, desc, score, level) {
+  const ctrlLines = getControlLines(score);
+  return `<div class="tier-card ${cls}">
+    <div class="tier-title">${title}</div>
+    <div class="tier-desc">${desc}</div>
+    ${ctrlLines}
+  </div>`;
+}
+
+function getControlLines(score) {
+  let lines = '<div style="margin-top:8px;font-size:.85rem">';
+  if (score >= 605) {
+    lines += '<span class="badge-green" style="padding:4px 10px;border-radius:12px;font-size:.8rem;font-weight:600;background:#d1fae5;color:#065f46">达到自招线（605分）</span> ';
+  }
+  if (score >= 513) {
+    lines += '<span class="badge-blue" style="padding:4px 10px;border-radius:12px;font-size:.8rem;font-weight:600;background:#e8f0fe;color:#1340a0">达到普高线（513分）</span> ';
+  }
+  if (score >= 400 && score < 513) {
+    lines += '<span class="badge-yellow" style="padding:4px 10px;border-radius:12px;font-size:.8rem;font-weight:600;background:#fef3c7;color:#92400e">达到中高职贯通线（400分）</span> ';
+  }
+  if (score < 400) {
+    lines += '<span class="badge-red" style="padding:4px 10px;border-radius:12px;font-size:.8rem;font-weight:600;background:#fee2e2;color:#991b1b">未达中高职贯通线（400分），可考虑普通中专/技校</span> ';
+  }
+  lines += '</div>';
+  return lines;
+}
+
+function buildSchoolRecommend(score) {
+  let html = '<div class="card"><h3>推荐学校（基于2025年数据）</h3>';
+  html += '<p style="font-size:.85rem;color:var(--text-secondary);margin-bottom:12px">以下学校2025年录取线在您分数附近（±15分），仅供参考</p>';
+  
+  // 匹配高中
+  let matched = schools.filter(s => Math.abs(s.score - score) <= 20 && s.score >= 513)
+    .sort((a,b) => Math.abs(a.score - score) - Math.abs(b.score - score))
+    .slice(0, 12);
+  
+  if (matched.length > 0) {
+    html += '<div class="school-tags" style="margin-top:8px">';
+    matched.forEach(s => {
+      const diff = s.score - score;
+      let diffTag = '';
+      if (diff > 10) diffTag = ' <span style="color:#dc2626;font-size:.75rem">需+'+diff.toFixed(1)+'分</span>';
+      else if (diff > 0) diffTag = ' <span style="color:#d97706;font-size:.75rem">需+'+diff.toFixed(1)+'分</span>';
+      else if (diff < -10) diffTag = ' <span style="color:#059669;font-size:.75rem">稳录</span>';
+      else if (diff < 0) diffTag = ' <span style="color:#059669;font-size:.75rem">较稳</span>';
+      else diffTag = ' <span style="color:#d97706;font-size:.75rem">冲一冲</span>';
+      
+      html += `<span class="school-tag">${s.name} ${s.score}${diffTag}</span>`;
+    });
+    html += '</div>';
+  } else {
+    html += '<p style="color:var(--text-secondary)">未找到匹配的高中学校，建议考虑中职教育体系。</p>';
+  }
+  
+  html += '</div>';
+  return html;
+}
+
+function buildZhongzhiRecommend(score) {
+  if (score < 350) {
+    return `<div class="tier-card zhi">
+      <div class="tier-title" style="color:#7c3aed">中职推荐：普通中专 / 技工学校</div>
+      <div class="tier-desc">你的分数可报考普通中专（控分线350分）和技工学校。建议选择有校企合作、就业率高的专业。</div>
+      <div class="action-btns" style="margin-top:12px">
+        <a href="zhongzhi.html" class="hero-btn hero-btn-purple">详细了解中职教育 &rarr;</a>
+      </div>
+    </div>`;
+  }
+  
+  let html = '<div class="tier-card zhi"><div class="tier-title" style="color:#7c3aed">中职推荐</div>';
+  html += '<div class="tier-desc">你的分数也可以考虑以下中职路径：</div>';
+  
+  if (score >= 513) {
+    html += '<div style="margin-top:8px"><strong>中本贯通（3+4，毕业获本科文凭）：</strong>';
+    html += '<div class="school-tags" style="margin-top:4px">';
+    zhongben.filter(z => z.score <= score + 30).slice(0,6).forEach(z => {
+      html += `<span class="school-tag zhi-tag">${z.name} ${z.score}分</span>`;
+    });
+    html += '</div></div>';
+  }
+  
+  if (score >= 400) {
+    html += '<div style="margin-top:8px"><strong>中高职贯通 / 五年一贯制（3+2/5年，毕业获大专文凭）：</strong>';
+    html += '<div style="font-size:.85rem;color:var(--text-secondary);margin-top:4px">热门专业分数线550-616分，如商会会计、护理、工业视光等。</div>';
+    html += '</div>';
+  }
+  
+  html += `<div class="action-btns" style="margin-top:12px">
+    <a href="zhongzhi.html" class="hero-btn hero-btn-purple">查看中职完整信息 &rarr;</a>
+  </div></div>`;
+  return html;
+}
+
+// 回车键触发查询
+document.getElementById('scoreInput').addEventListener('keypress', function(e) {
+  if (e.key === 'Enter') querySchool();
+});
+</script>
+
+<div class="footer">
+  <p>数据来源：上海市教育考试院（shmeea.edu.cn） | 基于2025年录取数据，2026年数据将于7月23日后更新</p>
+  <p>本工具仅供参考，志愿填报请以官方政策和各校招生简章为准</p>
+</div>
+</body>
+</html>
